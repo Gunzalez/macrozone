@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { ScrollView, Text } from "react-native";
-import HomeHeader from "./components/header";
-import { globalStyles } from "./styles/global";
+import HomeHeader from "../components/header";
+import { globalStyles } from "../styles/global";
 
 export default function Index() {
   return (
