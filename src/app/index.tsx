@@ -11,6 +11,9 @@ export default function Index() {
       <Link href="/meals" style={globalStyles.button}>
         <Text>View Meals</Text>
       </Link>
+      <Link href="/add-meal" style={globalStyles.button}>
+        <Text>Add Meal</Text>
+      </Link>
     </ScrollView>
   );
 }
