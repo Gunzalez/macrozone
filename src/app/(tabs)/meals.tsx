@@ -1,12 +1,13 @@
 import { clearAllMeals, getMeals, Meal } from "@/storage/meals";
 import { useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { globalStyles } from "../../styles/global";
 import MealItem from "../components/MealItem";
 
 export default function AllMealsScreen() {
   const [meals, setMeals] = useState<Meal[]>([]);
+  const scrollRef = useRef<ScrollView>(null);
 
   const loadMeals = async () => {
     const data = await getMeals();
@@ -20,12 +21,13 @@ export default function AllMealsScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
       loadMeals();
     }, []),
   );
 
   return (
-    <ScrollView style={globalStyles.container}>
+    <ScrollView style={globalStyles.container} ref={scrollRef}>
       <View style={globalStyles.header}>
         <Text style={globalStyles.title}>All Meals</Text>
         <TouchableOpacity onPress={handleClearAll}>

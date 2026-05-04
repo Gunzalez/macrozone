@@ -1,6 +1,6 @@
 import { getMeals, Meal } from "@/storage/meals";
 import { useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ScrollView, Text } from "react-native";
 import { globalStyles } from "../../styles/global";
 import HomeHeader from "../components/HeaderBar";
@@ -9,6 +9,7 @@ import RecentMeals from "../components/RecentMeals";
 
 export default function HomeScreen() {
   const [meals, setMeals] = useState<Meal[]>([]);
+  const scrollRef = useRef<ScrollView>(null);
 
   const loadMeals = async () => {
     const data = await getMeals();
@@ -17,12 +18,13 @@ export default function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: false });
       loadMeals();
     }, []),
   );
 
   return (
-    <ScrollView style={globalStyles.container}>
+    <ScrollView style={globalStyles.container} ref={scrollRef}>
       <Text style={globalStyles.title}>MacroZone</Text>
       <HomeHeader />
       <MacroGrid meals={meals} />
