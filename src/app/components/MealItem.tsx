@@ -10,6 +10,7 @@ type MealItemProps = {
   protein: number;
   carbs: number;
   fat: number;
+  from: "index" | "meals";
   onDelete: () => void;
 };
 
@@ -20,6 +21,7 @@ export default function MealItem({
   protein,
   carbs,
   fat,
+  from,
   onDelete,
 }: MealItemProps) {
   const handleLongPress = () => {
@@ -39,7 +41,7 @@ export default function MealItem({
   const handlePress = () => {
     router.navigate({
       pathname: "/add-meal",
-      params: { id: id },
+      params: { id: id, from: from },
     });
   };
 

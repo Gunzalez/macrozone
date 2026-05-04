@@ -19,7 +19,7 @@ export default function AddMealScreen() {
   const [carbs, setCarbs] = useState("");
   const [fat, setFat] = useState("");
 
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, from } = useLocalSearchParams<{ id: string; from: string }>();
   const clearFields = () => {
     setName("");
     setCalories("");
@@ -64,7 +64,11 @@ export default function AddMealScreen() {
 
     Alert.alert("Success", successMessage);
 
-    router.back();
+    if (from === "meals") {
+      router.navigate("/meals");
+    } else {
+      router.navigate("/");
+    }
   };
 
   const loadMeal = async (id: string) => {
