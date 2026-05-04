@@ -1,4 +1,5 @@
 import { addMeal, getMeal, Meal, updateMeal } from "@/storage/meals";
+import * as Haptics from "expo-haptics";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
 import {
@@ -10,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { colors, globalStyles } from "../../styles/global";
+import { prepareValue } from "../../utils/utils";
 
 export default function AddMealScreen() {
   const [savedMeal, setSavedMeal] = useState<Meal | null>(null);
@@ -39,30 +41,29 @@ export default function AddMealScreen() {
       return;
     }
 
-    const mealToSave = {
+    const newMealDetails = {
       name,
-      calories: Number(calories),
-      protein: Number(protein) || 0,
-      carbs: Number(carbs) || 0,
-      fat: Number(fat) || 0,
+      calories: prepareValue(calories),
+      protein: prepareValue(protein),
+      carbs: prepareValue(carbs),
+      fat: prepareValue(fat),
     };
 
     if (savedMeal) {
       await updateMeal({
         ...savedMeal,
-        ...mealToSave,
+        ...newMealDetails,
       });
     } else {
-      await addMeal(mealToSave);
+      await addMeal(newMealDetails);
     }
 
-    const successMessage = savedMeal
-      ? "Meal updated successfully!"
-      : "Meal added successfully!";
-
     clearFields();
-
-    Alert.alert("Success", successMessage);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    Alert.alert(
+      "Success",
+      `Meal ${savedMeal ? "updated" : "added"} successfully!`,
+    );
 
     if (from === "meals") {
       router.navigate("/meals");
@@ -103,7 +104,7 @@ export default function AddMealScreen() {
         </Text>
         {savedMeal && (
           <TouchableOpacity onPress={handleReset}>
-            <Text style={globalStyles.clearButton}>Clear</Text>
+            <Text style={globalStyles.clearButton}>New</Text>
           </TouchableOpacity>
         )}
       </View>
