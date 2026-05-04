@@ -4,11 +4,7 @@ import { getTotals } from "@/utils/utils";
 import { Ionicons } from "@expo/vector-icons";
 import { Share, TouchableOpacity } from "react-native";
 
-type ShareButtonProps = {
-  meals: Meal[];
-};
-
-export default function ShareButton({ meals }: ShareButtonProps) {
+export default function ShareButton({ meals }: { meals: Meal[] }) {
   const handleShare = async () => {
     const totals = getTotals({ meals });
 

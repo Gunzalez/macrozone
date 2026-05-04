@@ -6,11 +6,7 @@ import * as Clipboard from "expo-clipboard";
 import * as Haptics from "expo-haptics";
 import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-type CopyButtonProps = {
-  meals: Meal[];
-};
-
-export default function CopyButton({ meals }: CopyButtonProps) {
+export default function CopyButton({ meals }: { meals: Meal[] }) {
   const handleCopy = async () => {
     const totals = getTotals({ meals });
 
