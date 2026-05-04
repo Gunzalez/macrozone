@@ -22,6 +22,7 @@ export default function AddMealScreen() {
   const [fat, setFat] = useState("");
 
   const { id, from } = useLocalSearchParams<{ id: string; from: string }>();
+
   const clearFields = () => {
     setName("");
     setCalories("");
@@ -59,7 +60,9 @@ export default function AddMealScreen() {
     }
 
     clearFields();
+
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
     Alert.alert(
       "Success",
       `Meal ${savedMeal ? "updated" : "added"} successfully!`,

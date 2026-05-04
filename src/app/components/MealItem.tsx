@@ -42,7 +42,7 @@ export default function MealItem({
 
   const handlePress = () => {
     router.navigate({
-      pathname: "/add-meal",
+      pathname: "/edit-meal",
       params: { id: id, from: from },
     });
   };

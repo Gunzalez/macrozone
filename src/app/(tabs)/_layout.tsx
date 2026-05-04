@@ -25,7 +25,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="add-meal"
+        name="edit-meal"
         options={{
           title: "Add Meal",
           tabBarIcon: ({ color, size }) => (
@@ -35,7 +35,7 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            router.navigate("/add-meal");
+            router.navigate("/edit-meal");
           },
         }}
       />
