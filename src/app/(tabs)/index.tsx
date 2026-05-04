@@ -3,6 +3,7 @@ import { useFocusEffect } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { globalStyles } from "../../styles/global";
+import CopyButton from "../components/CopyButton";
 import HomeHeader from "../components/HeaderBar";
 import MacroGrid from "../components/MarcoGrid";
 import RecentMeals from "../components/RecentMeals";
@@ -33,6 +34,7 @@ export default function HomeScreen() {
 
       <HomeHeader />
       <MacroGrid meals={meals} />
+      <CopyButton meals={meals} />
       <RecentMeals meals={meals} onDelete={loadMeals} />
     </ScrollView>
   );
