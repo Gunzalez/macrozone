@@ -1,7 +1,7 @@
 import { deleteMeal } from "@/storage/meals";
 import { router } from "expo-router";
 import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { colors } from "../styles/global";
+import { colors } from "../../styles/global";
 
 type MealItemProps = {
   id: string;

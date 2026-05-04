@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { colors, globalStyles } from "../styles/global";
+import { colors, globalStyles } from "../../styles/global";
 
 export default function AddMealScreen() {
   const [savedMeal, setSavedMeal] = useState<Meal | null>(null);

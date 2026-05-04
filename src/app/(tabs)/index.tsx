@@ -2,10 +2,10 @@ import { getMeals, Meal } from "@/storage/meals";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { ScrollView, Text } from "react-native";
+import { globalStyles } from "../../styles/global";
 import HomeHeader from "../components/HeaderBar";
 import MacroGrid from "../components/MarcoGrid";
 import RecentMeals from "../components/RecentMeals";
-import { globalStyles } from "../styles/global";
 
 export default function HomeScreen() {
   const [meals, setMeals] = useState<Meal[]>([]);
