@@ -1,10 +1,10 @@
 import { Meal } from "@/storage/meals";
 
-export function prepareValue(value: string): number {
+export const prepareValue = (value: string): number => {
   return Math.abs(Number(value)) || 0;
-}
+};
 
-export function getTotals({ meals }: { meals: Meal[] }) {
+export const getTotals = ({ meals }: { meals: Meal[] }) => {
   return meals.reduce(
     (acc, meal) => ({
       calories: acc.calories + meal.calories,
@@ -14,4 +14,4 @@ export function getTotals({ meals }: { meals: Meal[] }) {
     }),
     { calories: 0, protein: 0, carbs: 0, fat: 0 },
   );
-}
+};
