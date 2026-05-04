@@ -29,7 +29,7 @@ export default function AllMealsScreen() {
       <View style={globalStyles.header}>
         <Text style={globalStyles.title}>All Meals</Text>
         <TouchableOpacity onPress={handleClearAll}>
-          <Text style={styles.clearButton}>Clear All</Text>
+          <Text style={globalStyles.clearButton}>Clear All</Text>
         </TouchableOpacity>
       </View>
       <View style={{ marginTop: 30 }}>
@@ -53,10 +53,3 @@ export default function AllMealsScreen() {
     </ScrollView>
   );
 }
-
-const styles = {
-  clearButton: {
-    color: "red",
-    fontSize: 16,
-  },
-};

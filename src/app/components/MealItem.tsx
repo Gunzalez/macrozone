@@ -1,4 +1,5 @@
 import { deleteMeal } from "@/storage/meals";
+import { router } from "expo-router";
 import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { colors } from "../styles/global";
 
@@ -35,8 +36,19 @@ export default function MealItem({
     ]);
   };
 
+  const handlePress = () => {
+    router.navigate({
+      pathname: "/add-meal",
+      params: { id: id },
+    });
+  };
+
   return (
-    <TouchableOpacity style={styles.container} onLongPress={handleLongPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onLongPress={handleLongPress}
+      onPress={handlePress}
+    >
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.macros}>
         {calories} cal • {protein}g P • {carbs}g C • {fat}g F

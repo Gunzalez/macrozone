@@ -44,4 +44,8 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  clearButton: {
+    color: "red",
+    fontSize: 16,
+  },
 });

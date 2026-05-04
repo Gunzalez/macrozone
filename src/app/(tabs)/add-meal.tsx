@@ -1,6 +1,6 @@
-import { addMeal } from "@/storage/meals";
-import { router } from "expo-router";
-import { useState } from "react";
+import { addMeal, getMeal, Meal, updateMeal } from "@/storage/meals";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useCallback, useState } from "react";
 import {
   Alert,
   StyleSheet,
@@ -12,40 +12,97 @@ import {
 import { colors, globalStyles } from "../styles/global";
 
 export default function AddMealScreen() {
+  const [savedMeal, setSavedMeal] = useState<Meal | null>(null);
   const [name, setName] = useState("");
   const [calories, setCalories] = useState("");
   const [protein, setProtein] = useState("");
   const [carbs, setCarbs] = useState("");
   const [fat, setFat] = useState("");
 
-  const handleAddMeal = async () => {
-    if (!name || !calories) {
-      Alert.alert("Error", "Please enter a meal name and calories.");
-      return;
-    }
-
-    await addMeal({
-      name,
-      calories: Number(calories),
-      protein: Number(protein) || 0,
-      carbs: Number(carbs) || 0,
-      fat: Number(fat) || 0,
-    });
-
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const clearFields = () => {
     setName("");
     setCalories("");
     setProtein("");
     setCarbs("");
     setFat("");
-
-    Alert.alert("Success", "Meal added successfully!");
-
-    router.push("/");
+    setSavedMeal(null);
   };
+
+  const handleReset = () => {
+    clearFields();
+  };
+
+  const handleUpdateOrAddMeal = async () => {
+    if (!name || !calories) {
+      Alert.alert("Error", "Please enter a meal name and calories.");
+      return;
+    }
+
+    const mealToSave = {
+      name,
+      calories: Number(calories),
+      protein: Number(protein) || 0,
+      carbs: Number(carbs) || 0,
+      fat: Number(fat) || 0,
+    };
+
+    if (savedMeal) {
+      await updateMeal({
+        ...savedMeal,
+        ...mealToSave,
+      });
+    } else {
+      await addMeal(mealToSave);
+    }
+
+    const successMessage = savedMeal
+      ? "Meal updated successfully!"
+      : "Meal added successfully!";
+
+    clearFields();
+
+    Alert.alert("Success", successMessage);
+
+    router.back();
+  };
+
+  const loadMeal = async (id: string) => {
+    const fetchedMeal = await getMeal(id);
+    if (fetchedMeal) {
+      setSavedMeal(fetchedMeal);
+      setName(fetchedMeal.name);
+      setCalories(String(fetchedMeal.calories));
+      setProtein(String(fetchedMeal.protein));
+      setCarbs(String(fetchedMeal.carbs));
+      setFat(String(fetchedMeal.fat));
+    } else {
+      clearFields();
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (id) {
+        loadMeal(id);
+      } else {
+        clearFields();
+      }
+    }, [id]),
+  );
 
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.title}>Add Meal</Text>
+      <View style={globalStyles.header}>
+        <Text style={globalStyles.title}>
+          {savedMeal ? "Update" : "Add"} Meal
+        </Text>
+        {savedMeal && (
+          <TouchableOpacity onPress={handleReset}>
+            <Text style={globalStyles.clearButton}>Clear</Text>
+          </TouchableOpacity>
+        )}
+      </View>
 
       <TextInput
         style={styles.input}
@@ -91,8 +148,10 @@ export default function AddMealScreen() {
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleAddMeal}>
-        <Text style={styles.buttonText}>Add Meal</Text>
+      <TouchableOpacity style={styles.button} onPress={handleUpdateOrAddMeal}>
+        <Text style={styles.buttonText}>
+          {savedMeal ? "Update" : "Add"} Meal
+        </Text>
       </TouchableOpacity>
     </View>
   );

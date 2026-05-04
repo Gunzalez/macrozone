@@ -31,6 +31,23 @@ export const addMeal = async (
   return newMeal;
 };
 
+export const updateMeal = async (meal: Meal): Promise<Meal> => {
+  const meals = await getMeals();
+
+  const index = meals.findIndex((m) => m.id === meal.id);
+
+  if (index === -1) {
+    throw new Error(`Meal with id ${meal.id} not found`);
+  }
+
+  const updatedMeal = { ...meals[index], ...meal };
+  const updatedMeals = [...meals];
+  updatedMeals[index] = updatedMeal;
+  await AsyncStorage.setItem(MEALS_KEY, JSON.stringify(updatedMeals));
+
+  return updatedMeal;
+};
+
 export const deleteMeal = async (id: string): Promise<void> => {
   const meals = await getMeals();
   const filtered = meals.filter((meal) => meal.id !== id);
@@ -39,4 +56,10 @@ export const deleteMeal = async (id: string): Promise<void> => {
 
 export const clearAllMeals = async (): Promise<void> => {
   await AsyncStorage.removeItem(MEALS_KEY);
+};
+
+export const getMeal = async (id: string): Promise<Meal | null> => {
+  const meals = await getMeals();
+  const meal = meals.find((meal) => meal.id === id);
+  return meal ?? null;
 };
